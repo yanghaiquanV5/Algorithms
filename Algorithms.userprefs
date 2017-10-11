@@ -1,0 +1,18 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Graph\Edge.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Graph\SpareGraph.cs" Line="110" Column="3" />
+      <File FileName="Assets\Scripts\Graph\TestGraph.cs" Line="35" Column="17" />
+      <File FileName="Assets\Scripts\Graph\DenseGraph.cs" Line="23" Column="18" />
+      <File FileName="Assets\Scripts\Graph\ReadGraph.cs" Line="32" Column="40" />
+      <File FileName="Assets\Scripts\Graph\Edge.cs" Line="15" Column="2" />
+      <File FileName="Assets\Scripts\Graph\Components.cs" Line="328" Column="2" />
+      <File FileName="Assets\Scripts\Graph\TestGraphDSFBSF.cs" Line="21" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
