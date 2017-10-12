@@ -1,20 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-public class DenseGraph 
+public class WeightDenseGraph<Weight> where Weight : System.IComparable<Weight> 
 {
-	List<List<int>> g;//顶点从0开始~//值0代表没有边，值1代表边
+	public List<List<Edge<Weight>>> g;//顶点从0开始~//值0代表没有边，值1代表边
 	int n,m;//顶点个数，边的数量\
 	bool isDirected;//是否是有向图
-	public DenseGraph(int n,bool isDirected){
+	public WeightDenseGraph(int n,bool isDirected){
 		this.n = n;
 		this.m = 0;
 		this.isDirected = isDirected;
-		g = new List<List<int>> ();
+		g = new List<List<Edge<Weight>>> ();
 		for (int i = 0; i != n; i++) {
-			List<int> row = new List<int> ();
+			List<Edge<Weight>> row = new List<Edge<Weight>> ();
 			row.Clear ();
-			int[] rowValue = new int[n];
+			Edge<Weight>[] rowValue = new Edge<Weight>[n];
+			for (int j = 0; j != n; j++)
+				rowValue [j] = null;
 			row.AddRange (rowValue);
 			g.Add (row);
 
@@ -25,48 +27,49 @@ public class DenseGraph
 
 	}
 
-	public void AddEdge(int p, int q){
+	public void AddEdge(int p, int q,Weight weight){
 		Assert (p<=n-1&&p>=0);
 		Assert (q<=n-1&&q>=0);
 
 		if (!hasEdge (p, q) && p != q) {
-			g [p] [q] = 1;
+			Edge<Weight> e = new Edge<Weight> (p, q, weight);
+			g [p] [q] = e;
 			m++;
 			if (!isDirected)
-				g [q] [p] = 1;
+				g [q] [p] = e;
 			
 		}
 
 	}
 	public bool hasEdge(int p, int q){
 		Assert (n >=1);
-		return g [p] [q]==1;
+		return g[p][q] != null?true:false;
 			
 	}
 
 	public class adjIterator
 	{
 		int index;
-		DenseGraph G;
+		WeightDenseGraph<Weight> G;
 		int v;//从0开始~
-		public adjIterator(DenseGraph graph,int v){
+		public adjIterator(WeightDenseGraph<Weight> graph,int v){
 			this.G = graph;
 			this.v = v;
 			this.index = 0;
 		}
-		public int begin(){
+		public Edge<Weight> begin(){
 			Assert (G.V()>=1);
 			index = 0;
 			if (index < G.V ())
-				return G.g [v] [index];
-			return -1;
+				return G.g[v] [index];
+			return null;
 		}
-		public int next(){
+		public Edge<Weight> next(){
 			index++;
 			if (index < G.V ())
-				return G.g [v] [index];
+				return G.g[v] [index];
 			else
-				return -1;
+				return null;
 		}
 		public bool IsEnd(){
 			if (index < G.V ())
@@ -86,8 +89,12 @@ public class DenseGraph
 	public void print(){
 		string matrixStr = "";
 		for (int i = 0; i != n; i++) {
-			for(int j = 0 ; j != n; j++)
-				matrixStr +=g[i][j] + " ";
+			for (int j = 0; j != n; j++) {
+				if(g[i][j] == null)
+					matrixStr +="0.0 ";
+				else
+					matrixStr +=g[i][j].weight + " ";
+			}
 			matrixStr+="\n";
 		}
 		Debug.Log (matrixStr);
@@ -105,4 +112,3 @@ public class DenseGraph
 	}
 
 }
-
