@@ -14,11 +14,13 @@ public class IndexMinHeap<Item> where Item : System.IComparable<Item>
 
 	public IndexMinHeap(int capicity){
 		this.capicity = capicity;
-		count = 0;
+		count = 0; 
 		data = new Item [capicity + 1];//data[1...capicity];
 		indexes = new int[capicity +1];
 		reserves = new int[capicity + 1];
-
+		for (int i = 1; i <= capicity; i++) {
+			reserves [i] = 0;
+		}
 	}
 
 	public IndexMinHeap(Item[] arr,int capicity){
@@ -44,7 +46,8 @@ public class IndexMinHeap<Item> where Item : System.IComparable<Item>
 	}
 
 	public void Insert(Item item){
-		_Assert (count + 1 <= capicity);
+		
+		Debug.Assert (count + 1 <= capicity);
 		count++;
 		data [count] = item;
 		indexes [count] = count;
@@ -52,6 +55,25 @@ public class IndexMinHeap<Item> where Item : System.IComparable<Item>
 		_ShiftUp (count);
 
 	}
+	//index 是从零开始的，所以有加一的操作
+	public void Insert(int index, Item item){
+		Debug.Assert (count+1 <= capicity);
+		Debug.Assert (index+1>=1 && index+1 <= capicity);
+		count++;
+		index++;
+		data [index] = item;
+		indexes [count] = index;
+		reserves [index] = count;
+		_ShiftUp (count);
+	}
+
+	public bool isContain(int index)//是否包含下标w的元素
+	{
+		Debug.Assert (index + 1>=1 && index + 1 <= capicity );
+		return (reserves [index+1] != 0);
+
+	}
+
 
 	// 向上调整位置，直到父母节点小于原来的data[index]
 	private void _ShiftUp(int index){
@@ -124,7 +146,7 @@ public class IndexMinHeap<Item> where Item : System.IComparable<Item>
 	}
 
 	public Item ExtraMinItem(){
-		_Assert (count -1 >= 0);
+		Debug.Assert (count -1 >= 0);
 		Item res = data [indexes[1]];
 		AlgorithmsHelp.Swap (ref indexes[1],ref indexes[count]);
 		reserves [indexes [1]] = 1;
@@ -134,12 +156,12 @@ public class IndexMinHeap<Item> where Item : System.IComparable<Item>
 		return res;
 	}
 	public int ExtraMinItemIndex(){
-		_Assert (count -1 >= 0);
-		int res = indexes[1];
+		Debug.Assert (count -1 >= 0);
+		int res = indexes[1] - 1;
 		AlgorithmsHelp.Swap (ref indexes[1],ref indexes[count]);
 
 		reserves[indexes[1]] = 1;
-		reserves [indexes[count]] = 0;
+		reserves [indexes[count]] =0;//0
 		count--;
 		_ShiftDown (1);
 		return res;
@@ -148,8 +170,10 @@ public class IndexMinHeap<Item> where Item : System.IComparable<Item>
 	public int Size(){
 		return count;
 	}
+	//index从0开始
 	public void Change(int index,Item item){
-		_Assert (index>=1 && index<= count);
+		Debug.Assert (index + 1 >=1 && index + 1<= capicity);
+		index++;
 		data [index] = item;
 		//未优化
 //		int pos = 0;
@@ -166,12 +190,12 @@ public class IndexMinHeap<Item> where Item : System.IComparable<Item>
 	}
 
 	public Item GetMin(){
-		_Assert (count>=1);
+		Debug.Assert (count>=1);
 		return data [indexes [1]];
 	}
 	//下标从1开始~
 	public int GetMinIndex(){
-		_Assert (count >= 1);
+		Debug.Assert (count >= 1);
 		return indexes [1];
 	}
 
